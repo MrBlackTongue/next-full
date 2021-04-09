@@ -1,10 +1,21 @@
 import {useRouter} from "next/router";
+import styles from '../../styles/User.module.scss'
 
-export default function () {
+export default function User ({user}) {
     const {query} = useRouter()
     return (
-        <div>
+        <divc className={styles.user}>
             <h1>Пользователь с id {query.id}</h1>
-        </div>
+            <div>Имя пользователя - {user.name}</div>
+        </divc>
     )
+}
+
+export async function getServerSideProps({params}) {
+    const response = await fetch(`http://jsonplaceholder.typicode.com/users/${params.id}`)
+    const user = await response.json()
+
+    return {
+        props: {user},
+    }
 }
